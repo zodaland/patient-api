@@ -13,8 +13,19 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+	//Spring dependencies
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	
+	//java dependencies
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'mysql:mysql-connector-java:8.0.27'
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'commons-io:commons-io:2.11.0'
 }
 
 tasks.named('test') {
