@@ -3,6 +3,7 @@ package com.patientapi.app.global.exception;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -21,16 +22,21 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.badRequest().body(new Response("1004"));
 	}
 	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<Response> methodArgumentNotValidException(Exception e) {
+		return ResponseEntity.badRequest().body(new Response("9995"));
+	}
+
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<Response> methodArgumentTypeMismatchException(Exception e) {
 		return ResponseEntity.badRequest().body(new Response("9996"));
 	}
-	
+
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	public ResponseEntity<Response> httpRequestMethodNotSupportedException(Exception e) {
 		return ResponseEntity.badRequest().body(new Response("9997"));
 	}
-	
+
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<Response> httpMessageNotReadableException(Exception e) {
 		return ResponseEntity.badRequest().body(new Response("9998"));
