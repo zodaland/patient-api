@@ -32,7 +32,6 @@ public class Response {
 	enum Info {
 		_1000("정상 처리 되었습니다."),
 		_1001("표시할 결과가 없습니다."),
-		_1002("이미지가 없습니다."),
 		_1003("올바르지 않은 파일 형식입니다."),
 		_1004("이미지 처리 중 오류가 발생했습니다."),
 		_9996("요청 타입이 올바르지 않습니다."),
@@ -45,8 +44,7 @@ public class Response {
 		private Info(String reason) {
 			this.reason = reason;
 		}
-		
-		//문자열로 RegistryType 객체를 얻는다. enum 상수와 같이 문자열도 대문자여야 한다.
+
 		private static final Map<String, Info> stringToInfo = new HashMap<String, Info>();
 		static {
 			for (Info status : values()) {
