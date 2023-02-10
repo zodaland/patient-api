@@ -18,22 +18,22 @@ import com.patientapi.app.global.response.Response;
 public class GlobalExceptionHandler {
 	@ExceptionHandler(ImageProcessException.class)
 	public ResponseEntity<Response> imageProcessException(ResponseStatusException e) {
-		return ResponseEntity.internalServerError().body(new Response("1004"));
+		return ResponseEntity.badRequest().body(new Response("1004"));
 	}
 	
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<Response> methodArgumentTypeMismatchException(Exception e) {
-		return ResponseEntity.internalServerError().body(new Response("9996"));
+		return ResponseEntity.badRequest().body(new Response("9996"));
 	}
 	
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	public ResponseEntity<Response> httpRequestMethodNotSupportedException(Exception e) {
-		return ResponseEntity.internalServerError().body(new Response("9997"));
+		return ResponseEntity.badRequest().body(new Response("9997"));
 	}
 	
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<Response> httpMessageNotReadableException(Exception e) {
-		return ResponseEntity.internalServerError().body(new Response("9998"));
+		return ResponseEntity.badRequest().body(new Response("9998"));
 	}
 
 	@ExceptionHandler(Exception.class)
