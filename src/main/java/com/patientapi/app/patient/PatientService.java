@@ -2,7 +2,6 @@ package com.patientapi.app.patient;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
@@ -12,6 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.patientapi.app.global.exception.ImageProcessException;
 import com.patientapi.app.global.response.Response;
+import com.patientapi.app.patient.dao.Patient;
+import com.patientapi.app.patient.dao.PatientRepository;
+import com.patientapi.app.patient.dto.PatientRequest;
+import com.patientapi.app.patient.dto.PatientResponse;
+import com.patientapi.app.patient.dto.PatientSaveResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +44,9 @@ public class PatientService {
 	public Response save(PatientRequest dto, MultipartFile image) throws ImageProcessException {
 		// 파일 확장자를 찾고 파일명을 결정합니다.
 		String contentType = image.getContentType();
+		if (contentType == null) {
+			return new Response("1003");
+		}
 		String extension;
 		switch (contentType) {
 		case "image/jpeg":
@@ -79,6 +86,7 @@ public class PatientService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// Exception 발생 시 커스텀 Exception을 설정하여 결과 처리를 GlobalExceptionHandler에 위임하고 rollback 처리합니다. 
+			// ImageProcessException은 code 1004를 반환합니다.
 			throw new ImageProcessException();
 		}
 		

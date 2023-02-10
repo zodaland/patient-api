@@ -1,5 +1,6 @@
 package com.patientapi.app.patient;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.patientapi.app.global.exception.ImageProcessException;
 import com.patientapi.app.global.response.Response;
+import com.patientapi.app.patient.dto.PatientRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,8 +32,6 @@ public class PatientController {
 	
 	@GetMapping("/image/{image}")
 	public ResponseEntity<byte[]> getImage(@PathVariable String image) throws ImageProcessException {
-		byte[] file = service.getImage(image);
-		
 		String extension = image.substring(image.indexOf("."));
 		MediaType mediaType;
 		switch (extension) {
@@ -44,19 +44,21 @@ public class PatientController {
 		default:
 			throw new ImageProcessException();
 		}
+		byte[] file = service.getImage(image);
 		
 		return ResponseEntity.ok().contentType(mediaType).body(file);
 	}
 	
 	@PostMapping
-	public Response save(
-			@RequestPart(value = "data", required = true) @Validated PatientRequest dto,
-			@RequestPart(value = "image", required = true) MultipartFile image
+	public ResponseEntity<Response> save(
+			@RequestPart(value = "data") @Validated PatientRequest dto,
+			@RequestPart MultipartFile image
 	) throws ImageProcessException {
 		if (image == null || image.isEmpty()) {
-			return new Response("1002");
+			return ResponseEntity.badRequest().body(new Response("1004"));
 		}
-		return service.save(dto, image);
+		Response response = service.save(dto, image);
+		return response.getCode().equals("1000") ? ResponseEntity.status(HttpStatus.CREATED).body(response) : ResponseEntity.badRequest().body(response);
 	}
 	
 	@DeleteMapping("/{id}")
