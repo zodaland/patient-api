@@ -107,7 +107,16 @@ public class PatientService {
 	}
 	
 	public void delete(long id) {
-		if (repo.existsById(id)) {
+		Patient patient = repo.findById(id).orElse(null);
+		if (patient != null) {
+			//파일 확장자를 얻어 경로 정보를 확인한다.
+			String fileName = patient.getImage();
+
+			File file = new File(props.getImagePath() + fileName);
+			if (file.exists()) {
+				file.delete();
+			}
+
 			repo.deleteById(id);
 		}
 	}

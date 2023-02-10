@@ -156,10 +156,10 @@ public class PatientServiceTests {
 		public void wrongId() {
 			long id = 1;
 			
-			when(repo.existsById(any(Long.class))).thenReturn(false);
+			when(repo.findById(any(Long.class))).thenReturn(Optional.ofNullable(null));
 			service.delete(id);
 			
-			verify(repo, times(1)).existsById(id);
+			verify(repo, times(1)).findById(id);
 			verify(repo, times(0)).deleteById(id);
 		}
 		
@@ -167,11 +167,18 @@ public class PatientServiceTests {
 		@DisplayName("success")
 		public void success() {
 			long id = 1;
+			Patient patient = Patient.builder()
+					.name("test")
+					.age((short) 1)
+					.gender((short) 1)
+					.hasDisease(false)
+					.image("test")
+					.build();
 			
-			when(repo.existsById(any(Long.class))).thenReturn(true);
+			when(repo.findById(any(Long.class))).thenReturn(Optional.of(patient));
 			service.delete(id);
 			
-			verify(repo, times(1)).existsById(id);
+			verify(repo, times(1)).findById(id);
 			verify(repo, times(1)).deleteById(id);
 		}
 	}
